@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Maps Review Scraper</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+</head>
+<body class="container pt-4">
+    <h2>📍 Google Maps Review Scraper</h2>
+
+    <form method="POST">
+        <div class="form-group">
+            <label>Enter Google Maps URL or Business Name:</label>
+            <input type="text" name="query" class="form-control" placeholder="E.g., Starbucks Bangalore" required>
+        </div>
+        <button class="btn btn-primary">Scrape Reviews</button>
+    </form>
+
+    {% if error %}
+    <div class="alert alert-danger mt-3">{{ error }}</div>
+    {% endif %}
+
+    {% if reviews %}
+    <hr>
+    <h4 class="mt-4">✅ Full Reviews for: <code>{{ query }}</code></h4>
+    <div class="mt-3">
+        {% for row in reviews %}
+        <div class="mb-3 p-3 border rounded">
+            <h5>👤 {{ row.Name }} — ⭐ {{ row.Rating }}</h5>
+            <p>{{ row.Review }}</p>
+            <small class="text-muted">🕒 {{ row.Date }}</small>
+        </div>
+        {% endfor %}
+    </div>
+
+    <hr>
+    <h4 class="mt-4">🖼 Reviewer Profile Images</h4>
+    <div class="row mt-3">
+        {% for row in reviews %}
+        {% if row.Image %}
+        <div class="col-md-3 mb-4 text-center">
+            <img src="{{ row.Image }}" class="img-thumbnail mb-2" style="height: 180px; object-fit: cover;">
+            <div><strong>{{ row.Name }}</strong> — ⭐ {{ row.Rating }}</div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</body>
+</html>
